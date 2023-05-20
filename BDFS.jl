@@ -70,11 +70,15 @@ bfs_steps(graph, a, b) = countsteps(popfirst!, graph, a, b)
 
 
 # Средняя трудоёмкость для всего графа по каждой паре вершин туда и назад
-function ψᵢ_sum_biDir_for_connected(graph::SimpleGraph)
+function ψᵢ_sum_biDir(graph::SimpleGraph)
     breadth = depth = 0
     for i in 1:nv(graph)
         for j in 1:nv(graph)
-            breadth += bfs_steps(graph, i, j)
+            breadth_steps = bfs_steps(graph, i, j)
+            if breadth_steps <= 0
+                continue
+            end
+            breadth += breadth_steps
             depth += dfs_steps(graph, i, j)
         end
     end
